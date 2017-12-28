@@ -1156,6 +1156,10 @@ bool CommandLineInterface::assemble(
 		cout << endl << "Pretty printed source:" << endl;
 		cout << stack.print() << endl;
 
+		cout << endl << "Optimized source:" << endl;
+		stack.optimise();
+		cout << stack.print() << endl;
+
 		MachineAssemblyObject object;
 		try
 		{
@@ -1177,12 +1181,13 @@ bool CommandLineInterface::assemble(
 			cout << object.bytecode->toHex() << endl;
 		else
 			cerr << "No binary representation found." << endl;
+		cout << "Size: " << object.bytecode->bytecode.size() << " bytes" << endl;
 
-		cout << endl << "Text representation:" << endl;
-		if (!object.assembly.empty())
-			cout << object.assembly << endl;
-		else
-			cerr << "No text representation found." << endl;
+//		cout << endl << "Text representation:" << endl;
+//		if (!object.assembly.empty())
+//			cout << object.assembly << endl;
+//		else
+//			cerr << "No text representation found." << endl;
 	}
 
 	return true;
