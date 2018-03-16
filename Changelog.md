@@ -5,13 +5,14 @@ Features:
  * Code Generator: More specialized and thus optimized implementation for ``x.push(...)``
  * Commandline interface: Error when missing or inaccessible file detected. Suppress it with the ``--ignore-missing`` flag.
  * General: Support accessing dynamic return data in post-byzantium EVMs.
+ * Inheritance: Error when using empty parenthesis for base class constructors that require arguments as experimental 0.5.0 feature.
  * Interfaces: Allow overriding external functions in interfaces with public in an implementing contract.
  * Optimizer: Remove useless ``SWAP1`` instruction preceding a commutative instruction (such as ``ADD``, ``MUL``, etc).
  * Optimizer: Replace comparison operators (``LT``, ``GT``, etc) with opposites if preceded by ``SWAP1``, e.g. ``SWAP1 LT`` is replaced with ``GT``.
  * Optimizer: Optimize across ``mload`` if ``msize()`` is not used.
  * Syntax Checker: Issue warning for empty structs (or error as experimental 0.5.0 feature).
  * General: Introduce new constructor syntax using the ``constructor`` keyword as experimental 0.5.0 feature.
- * Inheritance: Error when using empty parenthesis for base class constructors that require arguments as experimental 0.5.0 feature.
+ * Syntax Checker: Warn about modifiers on functions without implementation (this will turn into an error with version 0.5.0).
 
 Bugfixes:
  * Code Generator: Allow ``block.blockhash`` without being called.
