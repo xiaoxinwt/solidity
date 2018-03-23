@@ -181,6 +181,38 @@ BOOST_AUTO_TEST_CASE(array_type_name)
 	BOOST_CHECK_EQUAL(array["src"], "13:6:1");
 }
 
+BOOST_AUTO_TEST_CASE(short_type_name)
+{
+	CompilerStack c;
+	c.addSource("a", "contract c { function f() { uint[] memory x; } }");
+	c.setEVMVersion(dev::test::Options::get().evmVersion());
+	c.parseAndAnalyze();
+	map<string, unsigned> sourceIndices;
+	sourceIndices["a"] = 1;
+	Json::Value astJson = ASTJsonConverter(true, sourceIndices).toJson(c.ast("a"));
+	Json::Value varDecl = astJson["children"][0]["children"][0]["children"][2]["children"][0]["children"][0];
+	BOOST_CHECK_EQUAL(varDecl["attributes"]["storageLocation"], "memory");
+	BOOST_CHECK_EQUAL(varDecl["attributes"]["type"], "uint256[]");
+	Json::Value arrayType = varDecl["children"][0];
+	BOOST_CHECK_EQUAL(arrayType["attributes"]["type"], "uint256[]");
+}
+
+BOOST_AUTO_TEST_CASE(short_type_name_ref)
+{
+	CompilerStack c;
+	c.addSource("a", "contract c { function f() { uint[][] memory rows; } }");
+	c.setEVMVersion(dev::test::Options::get().evmVersion());
+	c.parseAndAnalyze();
+	map<string, unsigned> sourceIndices;
+	sourceIndices["a"] = 1;
+	Json::Value astJson = ASTJsonConverter(true, sourceIndices).toJson(c.ast("a"));
+	Json::Value varDecl = astJson["children"][0]["children"][0]["children"][2]["children"][0]["children"][0];
+	BOOST_CHECK_EQUAL(varDecl["attributes"]["storageLocation"], "memory");
+	BOOST_CHECK_EQUAL(varDecl["attributes"]["type"], "uint256[][]");
+	Json::Value arrayType = varDecl["children"][0];
+	BOOST_CHECK_EQUAL(arrayType["attributes"]["type"], "uint256[][]");
+}
+
 BOOST_AUTO_TEST_CASE(placeholder_statement)
 {
 	CompilerStack c;
