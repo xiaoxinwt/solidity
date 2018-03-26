@@ -7526,6 +7526,34 @@ BOOST_AUTO_TEST_CASE(inline_tuple_with_rational_numbers)
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(1)));
 }
 
+BOOST_AUTO_TEST_CASE(rational_number)
+{
+	char const* sourceCode = R"(
+		contract c {
+			function f() returns (uint) {
+				uint e = 1e1000000000 - 1e1000000000;
+				return e;
+			}
+		}
+	)";
+	compileAndRun(sourceCode);
+	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(0)));
+}
+
+BOOST_AUTO_TEST_CASE(rational_number_limit)
+{
+	char const* sourceCode = R"(
+		contract c {
+			function f() returns (uint) {
+				uint e = 3000000 * 1e999999999;
+				return e;
+			}
+		}
+	)";
+	compileAndRun(sourceCode);
+	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(0)));
+}
+
 BOOST_AUTO_TEST_CASE(destructuring_assignment)
 {
 	char const* sourceCode = R"(

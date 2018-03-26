@@ -43,6 +43,13 @@ using namespace std;
 using namespace dev;
 using namespace dev::solidity;
 
+namespace
+{
+
+unsigned static constexpr rationalExpLimit = 100000;
+
+}
+
 void StorageOffsets::computeOffsets(TypePointers const& _types)
 {
 	bigint slotOffset = 0;
@@ -677,10 +684,13 @@ tuple<bool, rational> RationalNumberType::isValidLiteral(Literal const& _literal
 		}
 		else if (expPoint != _literal.value().end())
 		{
-			// parse the exponent
+			// parse the exponent and check limits
 			bigint exp = bigint(string(expPoint + 1, _literal.value().end()));
 
 			if (exp > numeric_limits<int32_t>::max() || exp < numeric_limits<int32_t>::min())
+				return make_tuple(false, rational(0));
+
+			if (abs(exp) > rationalExpLimit)
 				return make_tuple(false, rational(0));
 
 			// parse the base

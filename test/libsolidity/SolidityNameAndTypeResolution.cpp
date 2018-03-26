@@ -4966,6 +4966,65 @@ BOOST_AUTO_TEST_CASE(rational_index_access)
 	CHECK_ERROR(text, TypeError, "rational_const 1 / 2 is not implicitly convertible to expected type uint256");
 }
 
+BOOST_AUTO_TEST_CASE(rational_number)
+{
+	char const* text = R"(
+		contract c {
+			function bignum() {
+				uint e;
+				e = 1e1000000000;
+			}
+		}
+	)";
+	CHECK_SUCCESS(text);
+
+	text = R"(
+		contract c {
+			function bignum() {
+				uint e;
+				e = 1e999999999;
+			}
+		}
+	)";
+	CHECK_SUCCESS(text);
+
+	text = R"(
+		contract c {
+			function bignum() {
+				uint e;
+				e = 3000000 * 1e999999999;
+			}
+		}
+	)";
+	CHECK_SUCCESS(text);
+}
+
+BOOST_AUTO_TEST_CASE(rational_number_limit)
+{
+	char const* text = R"(
+		contract c {
+			function bignum() {
+				uint e;
+				e = 1e10000000000;
+			}
+		}
+	)";
+	CHECK_ERROR(text, TypeError, "Invalid literal value.");
+}
+
+BOOST_AUTO_TEST_CASE(rational_number_implicit_conversion)
+{
+	char const* text = R"(
+		contract c {
+			function bignum() {
+				uint e;
+				e = 1e10000000000;
+			}
+		}
+	)";
+	CHECK_ERROR(text, TypeError, "Invalid literal value.");
+}
+
 BOOST_AUTO_TEST_CASE(rational_to_fixed_literal_expression)
 {
 	char const* text = R"(
