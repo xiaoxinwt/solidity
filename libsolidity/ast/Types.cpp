@@ -47,7 +47,7 @@ namespace
 {
 
 uint32_t static const exponentLimit = 9999;
-uint32_t static const rationalMaxBits = 4096;
+bigint static const rationalNumberMax = (bigint(2) << 4096) - 1;
 
 }
 
@@ -913,12 +913,13 @@ TypePointer RationalNumberType::binaryOperatorResult(Token::Value _operator, Typ
 				return TypePointer();
 			else if (abs(other.m_value) > numeric_limits<uint32_t>::max())
 				return TypePointer(); // This will need too much memory to represent.
+
 			uint32_t exponent = abs(other.m_value).numerator().convert_to<uint32_t>();
 			bigint numerator = pow(m_value.numerator(), exponent);
 			bigint denominator = pow(m_value.denominator(), exponent);
 
 			// Limit size to 4096 bits
-			if (numerator >= pow(bigint(2), rationalMaxBits) - 1)
+			if (numerator >= rationalNumberMax)
 				return TypePointer();
 
 			if (other.m_value >= 0)
