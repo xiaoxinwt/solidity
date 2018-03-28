@@ -46,7 +46,8 @@ using namespace dev::solidity;
 namespace
 {
 
-unsigned static constexpr rationalExpLimit = 100000;
+uint32_t static const exponentLimit = 9999;
+uint32_t static const rationalMaxBits = 4096;
 
 }
 
@@ -454,7 +455,7 @@ bigint IntegerType::maxValue() const
 }
 
 TypePointer IntegerType::binaryOperatorResult(Token::Value _operator, TypePointer const& _other) const
-{
+{	
 	if (
 		_other->category() != Category::RationalNumber &&
 		_other->category() != Category::FixedPoint &&
@@ -690,7 +691,7 @@ tuple<bool, rational> RationalNumberType::isValidLiteral(Literal const& _literal
 			if (exp > numeric_limits<int32_t>::max() || exp < numeric_limits<int32_t>::min())
 				return make_tuple(false, rational(0));
 
-			if (abs(exp) > rationalExpLimit)
+			if (abs(exp) >= exponentLimit)
 				return make_tuple(false, rational(0));
 
 			// parse the base
@@ -915,6 +916,11 @@ TypePointer RationalNumberType::binaryOperatorResult(Token::Value _operator, Typ
 			uint32_t exponent = abs(other.m_value).numerator().convert_to<uint32_t>();
 			bigint numerator = pow(m_value.numerator(), exponent);
 			bigint denominator = pow(m_value.denominator(), exponent);
+
+			// Limit size to 4096 bits
+			if (numerator >= pow(bigint(2), rationalMaxBits) - 1)
+				return TypePointer();
+
 			if (other.m_value >= 0)
 				value = rational(numerator, denominator);
 			else
