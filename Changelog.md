@@ -27,7 +27,7 @@ Bugfixes:
  * Type System: Improve error message when attempting to shift by a fractional amount.
  * Type System: Make external library functions accessible.
  * Type System: Prevent encoding of weird types.
- * Static Analyzer: Error on duplicated super constructor calls.
+ * Static Analyzer: Error on duplicated super constructor calls as experimental 0.5.0 feature.
 
 ### 0.4.21 (2018-03-07)
 
