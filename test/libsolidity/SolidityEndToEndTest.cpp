@@ -4973,7 +4973,6 @@ BOOST_AUTO_TEST_CASE(array_pop)
 {
 	char const* sourceCode = R"(
 		contract c {
-			uint256 a;
 			uint[] data;
 			function test() public returns (uint x, uint l) {
 				data.push(7);
@@ -4984,6 +4983,25 @@ BOOST_AUTO_TEST_CASE(array_pop)
 				l = data.length;
 			}
 		}
+	)";
+	compileAndRun(sourceCode);
+	ABI_CHECK(callContractFunction("test()"), encodeArgs(1, 0));
+}
+
+BOOST_AUTO_TEST_CASE(array_pop_uint16)
+{
+	char const* sourceCode = R"(
+		 contract c {
+			 uint16[] data;
+			 function test() public returns (uint x, uint l) {
+				 data.push(7);
+				 x = data.push(3);
+				 data.pop();
+				 x = data.length;
+				 data.pop();
+				 l = data.length;
+			 }
+		 }
 	)";
 	compileAndRun(sourceCode);
 	ABI_CHECK(callContractFunction("test()"), encodeArgs(1, 0));
@@ -5009,6 +5027,22 @@ BOOST_AUTO_TEST_CASE(array_pop_storage_empty)
 	char const* sourceCode = R"(
 		contract c {
 			uint[] data;
+			function test() public {
+				data.push(7);
+				data.pop();
+			}
+		}
+	)";
+	compileAndRun(sourceCode);
+	ABI_CHECK(callContractFunction("test()"), encodeArgs());
+	BOOST_CHECK(storageEmpty(m_contractAddress));
+}
+
+BOOST_AUTO_TEST_CASE(array_pop_storage_empty_uint16)
+{
+	char const* sourceCode = R"(
+		contract c {
+			uint16[] data;
 			function test() public {
 				data.push(7);
 				data.pop();
@@ -5108,6 +5142,28 @@ BOOST_AUTO_TEST_CASE(byte_array_pop_storage_empty_long)
 	compileAndRun(sourceCode);
 	ABI_CHECK(callContractFunction("test()"), encodeArgs(0));
 	BOOST_CHECK(storageEmpty(m_contractAddress));
+}
+
+BOOST_AUTO_TEST_CASE(byte_array_pop_copy_long)
+{
+	char const* sourceCode = R"(
+		contract c {
+			bytes data;
+			function test() public returns (bytes) {
+				for (uint i = 0; i < 33; i++)
+					data.push(3);
+				for (uint j = 0; j < 4; j++)
+					data.pop();
+				return data;
+			}
+		}
+	)";
+	compileAndRun(sourceCode);
+	ABI_CHECK(callContractFunction("test()"), encodeArgs(
+		u256(0x20),
+		u256(29),
+		asString(fromHex("0303030303030303030303030303030303030303030303030303030303"))
+	));
 }
 
 BOOST_AUTO_TEST_CASE(external_array_args)

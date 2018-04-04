@@ -1562,7 +1562,7 @@ MemberList::MemberMap ArrayType::nativeMembers(ContractDefinition const*) const
 				TypePointers{},
 				strings{string()},
 				strings{string()},
-				isByteArray() ? FunctionType::Kind::ByteArrayPop : FunctionType::Kind::ArrayPop
+				FunctionType::Kind::ArrayPop
 			)});
 		}
 	}
