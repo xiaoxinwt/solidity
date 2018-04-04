@@ -18,7 +18,6 @@ contract test {
     function(uint) pure internal public h = fh;
 }
 // ----
-// Warning: No visibility specified. Defaulting to "public".
 // TypeError: Internal or recursive type is not allowed for public state variables.
 // TypeError: Internal or recursive type is not allowed for public state variables.
 // TypeError: Internal or recursive type is not allowed for public state variables.
