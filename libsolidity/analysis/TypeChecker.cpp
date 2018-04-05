@@ -1666,6 +1666,8 @@ bool TypeChecker::visit(FunctionCall const& _functionCall)
 	}
 	else if (isPositionalCall)
 	{
+		bool const abiEncodeV2 = m_scope->sourceUnit().annotation().experimentalFeatures.count(ExperimentalFeature::ABIEncoderV2);
+
 		for (size_t i = 0; i < arguments.size(); ++i)
 		{
 			auto const& argType = type(*arguments[i]);
@@ -1682,7 +1684,7 @@ bool TypeChecker::visit(FunctionCall const& _functionCall)
 					argType->mobileType() &&
 					argType->mobileType()->interfaceType(false) &&
 					argType->mobileType()->interfaceType(false)->encodingType() &&
-					!(dynamic_cast<StructType const*>(argType->mobileType()->interfaceType(false)->encodingType().get()))
+					(abiEncodeV2 || !(dynamic_cast<StructType const*>(argType->mobileType()->interfaceType(false)->encodingType().get())))
 				))
 					m_errorReporter.typeError(arguments[i]->location(), "This type cannot be encoded.");
 			}
