@@ -700,21 +700,32 @@ bool CommandLineInterface::processInput()
 		try
 		{
 			auto path = boost::filesystem::path(_path);
-			if (!boost::filesystem::exists(path))
-				return ReadCallback::Result{false, "File not found."};
-
-			auto canonicalPath = boost::filesystem::canonical(path);
-			if (!boost::filesystem::is_regular_file(canonicalPath))
-				return ReadCallback::Result{false, "Not a valid file."};
+			boost::filesystem::path canonicalPath;
+			if (boost::filesystem::exists(path))
+				canonicalPath = boost::filesystem::canonical(path);
+			else
+			{
+				// mimic boost::filesystem::weakly_canonical (boost > 1.60):
+				// determine existing prefix of the lexically normalized path,
+				// canonicalize and append non-existing suffix
+				boost::filesystem::path existingPrefix;
+				bool prefixExists = true;
+				for (auto const& subpath: path.lexically_normal())
+				{
+					if (prefixExists && !boost::filesystem::exists(existingPrefix / subpath))
+					{
+						existingPrefix = boost::filesystem::canonical(existingPrefix);
+						prefixExists = false;
+					}
+					existingPrefix /= subpath;
+				}
+			}
 
 			bool isAllowed = false;
 			for (auto const& allowedDir: m_allowedDirectories)
 			{
 				// If dir is a prefix of boostPath, we are fine.
-				if (
-					std::distance(allowedDir.begin(), allowedDir.end()) <= std::distance(canonicalPath.begin(), canonicalPath.end()) &&
-					std::equal(allowedDir.begin(), allowedDir.end(), canonicalPath.begin())
-				)
+				if (boost::starts_with(canonicalPath, allowedDir))
 				{
 					isAllowed = true;
 					break;
@@ -723,9 +734,15 @@ bool CommandLineInterface::processInput()
 			if (!isAllowed)
 				return ReadCallback::Result{false, "File outside of allowed directories."};
 
+			if (!boost::filesystem::exists(canonicalPath))
+				return ReadCallback::Result{false, "File not found."};
+
+			if (!boost::filesystem::is_regular_file(canonicalPath))
+				return ReadCallback::Result{false, "Not a valid file."};
+
 			auto contents = dev::readFileAsString(canonicalPath.string());
 			m_sourceCodes[path.string()] = contents;
-			return ReadCallback::Result{true, contents};
+			return ReadCallback::Result{true, std::move(contents)};
 		}
 		catch (Exception const& _exception)
 		{
