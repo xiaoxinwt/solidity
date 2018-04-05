@@ -843,8 +843,8 @@ void ArrayUtils::popStorageArrayElement(ArrayType const& _type) const
 				// Zero-out the suffix of the byte array by masking it.
 				// Do not zero-out the least significant byte, but mask the
 				// higher bits of the length.
-				// (((1<<(8 * (32 - length))) - 1) << 8) + 128
-				let mask := add(mul(0x100, sub(exp(0x100, sub(32, length)), 1)), 0x80)
+				// (((1<<(8 * (32 - length))) - 1) << 8) + 192
+				let mask := add(mul(0x100, sub(exp(0x100, sub(32, length)), 1)), 0xc0)
 				slot_value := and(not(mask), slot_value)
 
 				// Reduce the length by 1

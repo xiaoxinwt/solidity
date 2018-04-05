@@ -5144,6 +5144,28 @@ BOOST_AUTO_TEST_CASE(byte_array_pop_storage_empty_long)
 	BOOST_CHECK(storageEmpty(m_contractAddress));
 }
 
+BOOST_AUTO_TEST_CASE(byte_array_pop_masking_long)
+{
+	char const* sourceCode = R"(
+		contract c {
+			bytes data;
+			function test() public returns (bytes) {
+				for (uint i = 0; i < 34; i++)
+					data.push(3);
+				data.pop();
+				return data;
+			}
+		}
+	)";
+	compileAndRun(sourceCode);
+	ABI_CHECK(callContractFunction("test()"), encodeArgs(
+		u256(0x20),
+		u256(33),
+		asString(fromHex("0303030303030303030303030303030303030303030303030303030303030303")),
+		asString(fromHex("03"))
+	));
+}
+
 BOOST_AUTO_TEST_CASE(byte_array_pop_copy_long)
 {
 	char const* sourceCode = R"(
