@@ -1,19 +1,24 @@
-# The Solidity Contract-Oriented Programming Language
-[![Join the chat at https://gitter.im/ethereum/solidity](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ethereum/solidity?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/ethereum/solidity.svg?branch=develop)](https://travis-ci.org/ethereum/solidity)
+# The Solidity 适用于合约的编程语言
 
-## Useful links
-To get started you can find an introduction to the language in the [Solidity documentation](https://solidity.readthedocs.org). In the documentation, you can find [code examples](https://solidity.readthedocs.io/en/latest/solidity-by-example.html) as well as [a reference](https://solidity.readthedocs.io/en/latest/solidity-in-depth.html) of the syntax and details on how to write smart contracts.
+[![Join the chat at https://gitter.im/ethereum/solidity](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ethereum/solidity?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/ethereum/solidity.svg?branch=develop)](https://travis-ci.org/ethereum/solidity)
 
-You can start using [Solidity in your browser](http://remix.ethereum.org) with no need to download or compile anything.
+## 有用的链接
 
-The changelog for this project can be found [here](https://github.com/ethereum/solidity/blob/develop/Changelog.md).
+开始之前，你可以在[Solidity documentation](https://solidity.readthedocs.org)中找到关于这种语言的介绍. 在该文档中你将通过一些[code examples](https://solidity.readthedocs.io/en/latest/solidity-by-example.html)及[a reference](https://solidity.readthedocs.io/en/latest/solidity-in-depth.html)的句法和详情来学习怎样编写智能合约.
 
-Solidity is still under development. So please do not hesitate and open an [issue in GitHub](https://github.com/ethereum/solidity/issues) if you encounter anything strange.
+你可以通过使用[Solidity in your browser](http://remix.ethereum.org)来开始编写而不需要下载或编译任何东西.
 
-## Building
-See the [Solidity documentation](https://solidity.readthedocs.io/en/latest/installing-solidity.html#building-from-source) for build instructions.
+关于本项目的更新日志可以在[here](https://github.com/ethereum/solidity/blob/develop/Changelog.md)找到.
+
+Solidity 任然处于开发中，所以当你碰到有什么奇怪的问题请直接[issue in GitHub](https://github.com/ethereum/solidity/issues)，不要有什么顾虑。.
+
+## 构建
+
+可以通过查看[Solidity documentation](https://solidity.readthedocs.io/en/latest/installing-solidity.html#building-from-source)来构建本说明.
 
 ## How to Contribute
+
 Please see our contribution guidelines in [the Solidity documentation](https://solidity.readthedocs.io/en/latest/contributing.html).
 
 Any contributions are welcome!
+
