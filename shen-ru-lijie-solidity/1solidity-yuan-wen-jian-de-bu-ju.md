@@ -18,7 +18,7 @@ pragma solidity ^0.4.0;
 
 同样在扩展版本号没有更新之前，bug 也可能会在同级版本中存在，需要注意。
 
-关于编译器的版本号定义有一套负责的规则，若要详细了解请参见 \[npm的版本号定义\]\("[https://docs.npmjs.com/misc/semver"\)。](https://docs.npmjs.com/misc/semver"%29。)
+关于编译器的版本号定义有一套负责的规则，若要详细了解请参见 [npm的版本号定义](https://docs.npmjs.com/misc/semver)
 
 ### 导入其他的源文件
 
