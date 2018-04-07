@@ -8,6 +8,14 @@
 * [安装 Solidity 编译器](an-zhuang-solidity-bian-yi-qi.md)
 * [Solidity示例](solidityshi-li.md)
 * [深入理解Solidity](shen-ru-lijie-solidity.md)
+  * [1、Solidity 源文件的布局](shen-ru-lijie-solidity/1solidity-yuan-wen-jian-de-bu-ju.md)
+  * 2、合约的结构
+  * 3、数据类型
+  * 4、计数单位和全局可见变量
+  * 5、表达式和控制语句
+  * 6、合约
+  * 7、Solidity Assembly
+  * 8、其他
 * 基于安全的考虑
 * 编译器的使用
 * 合约的 Metadata 信息
